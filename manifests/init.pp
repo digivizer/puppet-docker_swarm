@@ -29,6 +29,10 @@ class docker_swarm(
     }
   }
 
+  package { "addressable":
+    provider => "gem"
+  }
+
   if install_docker {
     class {'docker':
       tcp_bind         => $bind,

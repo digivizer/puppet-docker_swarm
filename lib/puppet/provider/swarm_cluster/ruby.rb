@@ -1,5 +1,6 @@
 require 'socket'
 require 'resolv'
+require 'addressable'
 
 Puppet::Type.type(:swarm_cluster).provide(:ruby) do
   desc "Support for Docker Swarm"
@@ -12,7 +13,10 @@ Puppet::Type.type(:swarm_cluster).provide(:ruby) do
 
   def interface
     hostname = Socket.gethostname
-    IPSocket.getaddress(hostname) 
+    ip = IPSocket.getaddress(hostname)
+    uri = Addressable::URI.new
+    uri.hostname = ip
+    uri.normalized_host
   end
 
   def swarm_conf
